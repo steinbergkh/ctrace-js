@@ -2,7 +2,9 @@
 [![Build Status](https://travis-ci.org/Nordstrom/ctrace-js.svg?branch=master)](https://travis-ci.org/Nordstrom/ctrace-js)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com/)
 
-ctrace-js is a Canonical [OpenTracing](http://opentracing.io/) implementation for Javascript.  It follows the [ctrace](https://github.com/Nordstrom/ctrace) specification.
+Canonical [OpenTracing](http://opentracing.io/) for Javascript.  It follows the [ctrace](https://github.com/Nordstrom/ctrace) specification.
+
+> Currently this only supports Node.js usage.  Browser-based Javascript support will be added later.
 
 ## Why
 [OpenTracing](http://opentracing.io) is a young specification and for most (if not all) SDK implementations, output format and wire protocol are specific to the backend platform implementation.  ctrace attempts to decouple the format and wire protocol from the backend tracer implementation.
