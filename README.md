@@ -25,13 +25,49 @@ $ npm install ctrace --save
 ## Usage
 Add instrumentation to the operations you want to track. This is composed primarily of using "spans" around operations of interest and adding log statements to capture useful data relevant to those operations.
 
-### New Tracer
-You can create a new ctrace Tracer like this.
+### Initialize Global Tracer
+First, initialize global tracer as follows.
 
 ```js
+const opentracing = require('opentracing')
 const Tracer = require('ctrace')
-const tracer = new Tracer()
+const tracer = opentracing.globalTracer()
+
+opentracing.initGlobalTracer(new Tracer())
 ```
+
+### Use request-promise Middleware for client spans
+
+
+### Use Express Middleware for server spans
+Add the Express Middleware as follows to trace HTTP REST server calls.
+
+```js
+const express = require('express')
+const Tracer = require('ctrace')
+const app = express()
+
+app.use(Tracer.express)
+
+app.post('/users', (req, res) => {
+  ...
+})
+
+```
+
+### Log Event
+The HTTP REST service might want to log the DB update as follows.
+
+```js
+app.post('/users', (req, res) => {
+  const span = req.opentracing.span
+  span.log({event: 'SaveUser', userId: ...})  
+})
+```
+
+## Advanced Usage
+The following are examples of advanced usage.  In these examples, tracing is done
+manually rather than using auto-instrumentation middleware.
 
 ### Start Client Span
 If you want to track a call to a downstream REST service, start a new client Span like this.
@@ -86,13 +122,6 @@ app.post('/users', (req, res) => {
   ...
 
 })
-```
-
-### Log Event
-The REST service might want to log the DB update as follows.
-
-```js
-  span.log({event: 'SaveUser', userId: ...})
 ```
 
 ### Finish Server Span
