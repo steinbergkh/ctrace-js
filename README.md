@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/Nordstrom/ctrace-js.svg?branch=master)](https://travis-ci.org/Nordstrom/ctrace-js)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Canonical [OpenTracing](http://opentracing.io/) for Javascript.  It follows the [ctrace](https://github.com/Nordstrom/ctrace) specification.
+Canonical [OpenTracing](http://opentracing.io/) for Javascript.  It follows the [ctrace](https://github.com/Nordstrom/ctrace/tree/new) specification.
 
 > Currently this only supports Node.js usage.  Browser-based Javascript support will be added later.
 
@@ -13,7 +13,7 @@ Canonical [OpenTracing](http://opentracing.io/) for Javascript.  It follows the 
 ctrace specifies a canonical format for trace logs.  By default the logs are output to stdout but you can configure them to go to any WritableStream.
 
 ## Required Reading
-To fully understand this platform API, it's helpful to be familiar with the [OpenTracing project](http://opentracing.io) project, [terminology](http://opentracing.io/documentation/pages/spec.html), and [ctrace specification](https://github.com/Nordstrom/ctrace) more specifically.
+To fully understand this platform API, it's helpful to be familiar with the [OpenTracing project](http://opentracing.io) project, [terminology](http://opentracing.io/documentation/pages/spec.html), and [ctrace specification](https://github.com/Nordstrom/ctrace/tree/new) more specifically.
 
 ## Install
 Install via npm as follows:
