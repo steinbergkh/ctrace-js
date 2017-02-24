@@ -1,5 +1,5 @@
 # ctrace-js
-[![Build Status](https://travis-ci.org/Nordstrom/ctrace-js.svg?branch=master)](https://travis-ci.org/Nordstrom/ctrace-js)
+[![Build Status](https://travis-ci.org/Nordstrom/ctrace-js.svg?branch=new)](https://travis-ci.org/Nordstrom/ctrace-js)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Canonical [OpenTracing](http://opentracing.io/) for Javascript.  It follows the [ctrace](https://github.com/Nordstrom/ctrace/tree/new) specification.
@@ -36,8 +36,8 @@ const tracer = opentracing.globalTracer()
 opentracing.initGlobalTracer(new Tracer())
 ```
 
-### Use request-promise Middleware for client spans
-
+### Client HTTP Requests
+> TBD
 
 ### Use Express Middleware for server spans
 Add the Express Middleware as follows to trace HTTP REST server calls.
