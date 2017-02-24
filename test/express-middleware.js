@@ -6,36 +6,35 @@ const should = require('should')
 const Tracer = require('../')
 const Span = require('../lib/span.js')
 const Stream = require('./util/stream.js')
-const request = require('request-promise')
-const describe = require('mocha').describe
+
 const stringify = JSON.stringify
 
 describe('express middleware', () => {
-  let stream, buf, tracer
+  const express = require('express')
+  const request = require('request-promise')
+
+  let stream, tracer
 
   // global open tracing setup
   beforeEach(() => {
     const opentracing = require('opentracing')
     stream = new Stream()
-    buf = stream.buf
     tracer = new Tracer({stream})
     opentracing.initGlobalTracer(tracer)
   })
 
   // server vars
-  let express, request, app, server, port, url, incomingReq
+  let app, server, port, url, incomingReq
 
   // mock app server setup
   beforeEach((done) => {
-    express = require('express')
-    request = require('request-promise')
     app = express()
     app.use(Tracer.express)
 
     // save the request object on all incoming requests for later assertions
     app.all('*', (req, res, next) => {
       incomingReq = req
-      res.type('application/json');
+      res.type('application/json')
       next()
     })
 
@@ -43,7 +42,7 @@ describe('express middleware', () => {
     app.get('/hi', (req, res) => {
       setTimeout(function () {
         res.send({data: 'hi'})
-      }, 1);
+      }, 1)
     })
 
     // always responds with error route
@@ -53,16 +52,16 @@ describe('express middleware', () => {
       } catch (e) {
         setTimeout(function () {
           res.status(500).send({data: 'this is an error!'})
-        }, 1);
+        }, 1)
       }
     })
     function alwaysThrows () { throw new Error('Error from endpoint /err') }
 
     // start up app server with routes /hi and /err
     startServer(done)
-  });
+  })
 
-  function startServer(done){
+  function startServer (done) {
     server = app.listen(0, () => {
       port = server.address().port
       url = `http://127.0.0.1:${port}`
@@ -71,7 +70,7 @@ describe('express middleware', () => {
   }
 
   afterEach(() => {
-    if(server){ server.close() }
+    if (server) { server.close() }
     incomingReq = null
   })
 
@@ -102,10 +101,10 @@ describe('express middleware', () => {
 
     it('should start span and assign to property `span` of request', () => {
       should.exist(incomingReq)
-      incomingReq.should.have.property('span').and.be.an.instanceOf(Span);
+      incomingReq.should.have.property('span').and.be.an.instanceOf(Span)
 
       const rec = stream.getJSON(0)
-      let spanContext = incomingReq.span.context();
+      let spanContext = incomingReq.span.context()
       spanContext.should.containEql({
         'traceId': rec.traceId,
         'spanId': rec.spanId
@@ -116,7 +115,7 @@ describe('express middleware', () => {
       const recEnd = stream.getJSON(1)
 
       // should have duration field set to int and start shouldn't equal end
-      recEnd.should.have.property('duration').which.is.a.Number().and.is.above(0);
+      recEnd.should.have.property('duration').which.is.a.Number().and.is.above(0)
 
       // 'log' should be an object that has a Finish-Span event
       recEnd.should.have.property('log').which.is.an.Object().which.has.property('event', 'Finish-Span')
@@ -129,11 +128,11 @@ describe('express middleware', () => {
   })
   describe('when an error occurs', () => {
     beforeEach(() => {
-      return request({method: 'GET', url: `${url}/err`}).catch((err) => { return err; })
+      return request({method: 'GET', url: `${url}/err`}).catch((err) => { return err })
     })
     it('sets error status code as a tag', () => {
       stream.getJSON(1).should.have.tag('http.status_code', 500)
-    });
+    })
     it('should set error boolean as tag on finish span', () => {
       stream.getJSON(1).should.have.tag('error', true)
     })
@@ -143,7 +142,9 @@ describe('express middleware', () => {
     let parentSpanIdHeader = 'eb53262cf9c04b5b'
 
     beforeEach(() => {
-      return request({ method: 'GET', url: `${url}/hi`,
+      return request({
+        method: 'GET',
+        url: `${url}/hi`,
         headers: { 'X-Correlation-ID': traceIdHeader, 'X-Request-ID': parentSpanIdHeader } })
     })
     it('should start span with trace id from extracted header', () => {
@@ -163,7 +164,7 @@ describe('express middleware', () => {
       return request({ method: 'GET', url: `${url}/hi`, headers: { 'Correlation-ID': 'incorrect header key' } })
         .then(() => {
           const rec = stream.getJSON(0)
-          ; ['traceId', 'spanId'].should.matchEach( (val) => {
+          ; ['traceId', 'spanId'].should.matchEach((val) => {
             rec.should.have.key(val).which.is.a.String().and.is.not.empty()
           }, `expected ${stringify(rec, null, 2)} to have keys traceId and spanId that are non-empty strings`)
         })

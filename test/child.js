@@ -68,7 +68,7 @@ describe('child span', () => {
     tracer.startSpan('child-childWithTags', {
       childOf: parent,
       tags: {
-        'component': 'SpanTag',
+        'component': 'SpanTag'
       }
     })
     const rec = parse(buf[1])
@@ -87,7 +87,7 @@ describe('child span', () => {
       operation: 'child-childWithTags',
       start: startTime,
       tags: { component: 'SpanTag' },
-      log: { event: 'Start-Span', timestamp: logTime}
+      log: { event: 'Start-Span', timestamp: logTime }
     })
   })
 })
