@@ -31,6 +31,6 @@
     ]
   },
   "dependencies": {
-    "opentracing": "https://github.com/opentracing/opentracing-javascript.git"
+    "opentracing": "^0.13.0"
   }
 }
