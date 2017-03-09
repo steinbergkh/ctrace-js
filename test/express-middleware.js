@@ -38,7 +38,7 @@ describe('express middleware', () => {
     app.get('/hi', (req, res) => {
       setTimeout(function () {
         res.send({data: 'hi'})
-      }, 1)
+      }, 5)
     })
 
     // always responds with error route
@@ -48,7 +48,7 @@ describe('express middleware', () => {
       } catch (e) {
         setTimeout(function () {
           res.status(500).send({data: 'this is an error!'})
-        }, 1)
+        }, 5)
       }
     })
     function alwaysThrows () { throw new Error('Error from endpoint /err') }
