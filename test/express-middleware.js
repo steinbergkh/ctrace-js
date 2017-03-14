@@ -82,12 +82,12 @@ describe('express middleware', () => {
       it('should have expected general middleware span tags', () => {
         let record = stream.getJSON(0)
         record.should.have.tag('span.kind', 'server')
-        record.should.have.tag('component', 'routes')
+        record.should.have.tag('component', 'ctrace-express')
       })
       it('should have request-based middleware span tags', () => {
         let record = stream.getJSON(0)
         record.should.have.tag('peer.hostname', '127.0.0.1')
-        record.should.have.tag('peer.ipv6', '::ffff:127.0.0.1')
+        record.should.have.tag('http.remote_addr', '::ffff:127.0.0.1')
         record.should.have.tag('http.method', 'GET')
         record.should.have.tag('http.url', `${url}/hi`)
       })
