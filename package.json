@@ -4,7 +4,7 @@
   "description": "Canonical OpenTracing for Javascript",
   "main": "index.js",
   "scripts": {
-    "test": "standard && mocha",
+    "test": "standard | snazzy && mocha",
     "bench": "node demo/bench.js"
   },
   "author": "@andyday",
