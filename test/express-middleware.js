@@ -137,6 +137,13 @@ describe('express middleware', () => {
       it('should set error boolean as tag on finish span', () => {
         stream.getJSON(1).should.have.tag('error', true)
       })
+      it('should log the response body', () => {
+        let errorLog = stream.getJSON(1)
+        errorLog.should.have.property('log')
+        errorLog.log.should.have.property('http.response_body')
+          .which.is.an.Object()
+          .and.eql({data: 'this is an error!'})
+      })
     })
     describe('when tracing headers are passed', () => {
       let traceIdHeader = '5ab0a6dc1b253333'
